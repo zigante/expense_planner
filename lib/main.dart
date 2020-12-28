@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import 'transaction.dart';
+import 'models/transaction.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,6 +23,8 @@ class MyHomePage extends StatelessWidget {
     Transaction(id: 'tx2', title: 'Camiseta nova', amount: 79.99, date: DateTime.now()),
     Transaction(id: 'tx3', title: 'Jeans', amount: 119.99, date: DateTime.now()),
   ];
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +50,19 @@ class MyHomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    TextField(decoration: InputDecoration(labelText: 'Título')),
-                    TextField(decoration: InputDecoration(labelText: 'Valor')),
-                    FlatButton(onPressed: () => null, child: Text('Adicionar'), textColor: Colors.purple)
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Título'),
+                      controller: this.titleController,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Valor'),
+                      controller: this.amountController,
+                    ),
+                    FlatButton(
+                        onPressed: () =>
+                            this.transactions.add(Transaction(id: null, title: null, amount: null, date: null)),
+                        child: Text('Adicionar'),
+                        textColor: Colors.purple)
                   ],
                 ),
               ),
