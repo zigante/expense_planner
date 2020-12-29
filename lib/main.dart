@@ -19,8 +19,10 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.amber,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-            headline6: TextStyle(fontFamily: 'OpenSans', fontSize: 20, fontWeight: FontWeight.bold),
-            button: TextStyle(color: Colors.white)),
+              headline6: TextStyle(fontFamily: 'OpenSans', fontSize: 20, fontWeight: FontWeight.bold),
+              button: TextStyle(color: Colors.white),
+            ),
+        errorColor: Colors.red,
         appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
                   headline6: TextStyle(fontFamily: 'OpenSans', fontSize: 20, fontWeight: FontWeight.bold),
@@ -38,9 +40,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    // Transaction(id: 'tx1', title: 'Tênis novo', amount: 299.99, date: DateTime.now()),
-    // Transaction(id: 'tx2', title: 'Camiseta nova', amount: 79.99, date: DateTime.now()),
-    // Transaction(id: 'tx3', title: 'Jeans', amount: 119.99, date: DateTime.now()),
+    Transaction(id: 'tx1', title: 'Tênis novo', amount: 299.99, date: DateTime.now()),
+    Transaction(id: 'tx2', title: 'Camiseta nova', amount: 79.99, date: DateTime.now()),
+    Transaction(id: 'tx3', title: 'Jeans', amount: 119.99, date: DateTime.now()),
   ];
 
   List<Transaction> get _recentTransactions {
@@ -61,6 +63,10 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       this._transactions.add(newTransaction);
     });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() => _transactions.removeWhere((item) => item.id == id));
   }
 
   void startAddNewTransaction(BuildContext context) {
@@ -91,9 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(this._recentTransactions),
-            Column(children: [
-              TransactionList(this._transactions),
-            ]),
+            TransactionList(this._transactions, this._deleteTransaction),
           ],
         ),
       ),

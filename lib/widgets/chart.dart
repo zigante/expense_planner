@@ -27,8 +27,7 @@ class Chart extends StatelessWidget {
       return GroupTransaction(amount: totalAmount, day: DateFormat.E('pt_BR').format(weekDay), index: weekDay.weekday);
     });
 
-    list.sort((a, b) => a.index.compareTo(b.index));
-    return list.toList();
+    return list.reversed.toList();
   }
 
   double get maxSpending {
