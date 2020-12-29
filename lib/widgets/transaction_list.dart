@@ -30,12 +30,12 @@ class TransactionList extends StatelessWidget {
                 final currentTransaction = this._transactions[_index];
                 return Card(
                   elevation: 5,
-                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: ListTile(
                     leading: CircleAvatar(
                       radius: 30,
                       child: Padding(
-                        padding: const EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(5),
                         child: FittedBox(
                           child: Text('R\$ ${currentTransaction.amount.toStringAsFixed(2)}'),
                         ),
@@ -50,38 +50,6 @@ class TransactionList extends StatelessWidget {
                     // ),
                   ),
                 );
-                // return Card(
-                //   child: Row(
-                //     children: [
-                //       Container(
-                //         padding: EdgeInsets.all(10),
-                //         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                //         decoration: BoxDecoration(border: Border.all(color: Theme.of(context).primaryColor, width: 2)),
-                //         child: Text(
-                //           'R\$ ${currentTransaction.amount.toStringAsFixed(2)}',
-                //           style: TextStyle(
-                //             fontWeight: FontWeight.bold,
-                //             fontSize: 20,
-                //             color: Theme.of(context).primaryColor,
-                //           ),
-                //         ),
-                //       ),
-                //       Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           Text(
-                //             currentTransaction.title,
-                //             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                //           ),
-                //           Text(
-                //             new DateFormat.yMMMMd('pt_BR').format(currentTransaction.date),
-                //             style: TextStyle(color: Colors.grey),
-                //           ),
-                //         ],
-                //       )
-                //     ],
-                //   ),
-                // );
               },
               itemCount: this._transactions.length,
             ),

@@ -15,12 +15,12 @@ class Chart extends StatelessWidget {
       final weekDay = DateTime.now().subtract(Duration(days: index));
       double totalAmount = 0;
       for (int i = 0; i < this._recentTransactiontions.length; i++) {
-        // final currentTransactiontions = this._recentTransactiontions[i];
+        final currentTransactiontions = this._recentTransactiontions[i];
 
-        if (this._recentTransactiontions[i].date.day == weekDay.day &&
-            this._recentTransactiontions[i].date.month == weekDay.month &&
-            this._recentTransactiontions[i].date.year == weekDay.year) {
-          totalAmount += this._recentTransactiontions[i].amount;
+        if (currentTransactiontions.date.day == weekDay.day &&
+            currentTransactiontions.date.month == weekDay.month &&
+            currentTransactiontions.date.year == weekDay.year) {
+          totalAmount += currentTransactiontions.amount;
         }
       }
 

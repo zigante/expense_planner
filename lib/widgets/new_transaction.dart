@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function _addNewTransaction;
@@ -11,14 +12,24 @@ class NewTransaction extends StatefulWidget {
 class _NewTransactionState extends State<NewTransaction> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+  DateTime _currentDate;
 
-  void submit() {
+  void _submit() {
     final currentTitle = this._titleController.text;
-    final currentAmount = double.parse(this._amountController.text);
+    final currentAmount = double.tryParse(this._amountController.text);
 
-    if (currentTitle.isEmpty || currentAmount <= 0 || currentAmount.isNaN) return;
-    widget._addNewTransaction(currentTitle, currentAmount);
+    if (currentTitle.isEmpty || currentAmount <= 0 || currentAmount.isNaN || this._currentDate == null) return;
+    widget._addNewTransaction(currentTitle, currentAmount, this._currentDate);
     Navigator.of(context).pop();
+  }
+
+  void _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: this._currentDate == null ? DateTime.now() : this._currentDate,
+      firstDate: DateTime(DateTime.now().year),
+      lastDate: DateTime.now(),
+    ).then((value) => setState(() => this._currentDate = value));
   }
 
   @override
@@ -37,9 +48,34 @@ class _NewTransactionState extends State<NewTransaction> {
               decoration: InputDecoration(labelText: 'Valor'),
               controller: this._amountController,
               keyboardType: TextInputType.number,
-              onSubmitted: (_) => submit(),
+              onSubmitted: (_) => _submit(),
             ),
-            FlatButton(onPressed: submit, child: Text('Adicionar'), textColor: Colors.purple)
+            Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(this._currentDate == null
+                        ? 'Nenhuma data selecionada'
+                        : 'Data: ${new DateFormat.yMd('pt_BR').format(_currentDate)}'),
+                  ),
+                  FlatButton(
+                    onPressed: _showDatePicker,
+                    child: Text(
+                      'Escolha uma data',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    textColor: Theme.of(context).primaryColor,
+                  ),
+                ],
+              ),
+            ),
+            RaisedButton(
+              onPressed: _submit,
+              child: Text('Adicionar'),
+              textColor: Theme.of(context).textTheme.button.color,
+              color: Theme.of(context).primaryColor,
+            )
           ],
         ),
       ),
