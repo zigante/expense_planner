@@ -11,7 +11,7 @@ class Chart extends StatelessWidget {
   Chart(this._recentTransactiontions);
 
   List<GroupTransaction> get groupedTransactions {
-    return List.generate(7, (index) {
+    final list = List.generate(7, (index) {
       final weekDay = DateTime.now().subtract(Duration(days: index));
       double totalAmount = 0;
       for (int i = 0; i < this._recentTransactiontions.length; i++) {
@@ -24,8 +24,11 @@ class Chart extends StatelessWidget {
         }
       }
 
-      return GroupTransaction(amount: totalAmount, day: DateFormat.E('pt_BR').format(weekDay));
+      return GroupTransaction(amount: totalAmount, day: DateFormat.E('pt_BR').format(weekDay), index: weekDay.weekday);
     });
+
+    list.sort((a, b) => a.index.compareTo(b.index));
+    return list.toList();
   }
 
   double get maxSpending {
