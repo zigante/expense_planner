@@ -1,7 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import './widgets/transactions.dart';
+import './models/transaction.dart';
+import './widgets/new_transaction.dart';
+import './widgets/transaction_list.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,21 +14,55 @@ class MyApp extends StatelessWidget {
     initializeDateFormatting('pt_BR');
     return MaterialApp(
       home: MyHomePage(),
-      title: 'Flutter App',
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        accentColor: Colors.amber,
+      ),
+      title: 'Personal Expenses Planner',
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final List<Transaction> _transactions = [
+    Transaction(id: 'tx1', title: 'Tênis novo', amount: 299.99, date: DateTime.now()),
+    Transaction(id: 'tx2', title: 'Camiseta nova', amount: 79.99, date: DateTime.now()),
+    Transaction(id: 'tx3', title: 'Jeans', amount: 119.99, date: DateTime.now()),
+  ];
+
+  void _addNewTransaction(String title, double amount) {
+    final newTransaction = Transaction(
+      title: title,
+      amount: amount,
+      date: new DateTime.now(),
+      id: 'tx${this._transactions.length + 1}',
+    );
+
+    setState(() {
+      this._transactions.add(newTransaction);
+    });
+  }
+
   void startAddNewTransaction(BuildContext context) {
-    showModalBottomSheet(context: context, builder: (_) => null);
+    showModalBottomSheet(
+        context: context,
+        builder: (_) => GestureDetector(
+              onTap: () => null,
+              child: NewTransaction(_addNewTransaction),
+              behavior: HitTestBehavior.opaque,
+            ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Expense Planner'),
+        title: Text('Personal Expenses Planner'),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -42,7 +79,9 @@ class MyHomePage extends StatelessWidget {
               child: Container(color: Colors.blue, child: Text('Chart'), width: double.infinity),
               elevation: 5,
             ),
-            Transactions()
+            Column(children: [
+              TransactionList(this._transactions),
+            ]),
           ],
         ),
       ),
